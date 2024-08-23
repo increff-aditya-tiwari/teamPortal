@@ -1,0 +1,68 @@
+<mat-card>
+    <h1>Add New Event</h1>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <form (ngSubmit)="addEvent()">
+            <!-- title field  -->
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Event Name</mat-label>
+              <input
+                [(ngModel)]="eventForm.eventName"
+                type="text"
+                name="title"
+                placeholder="Enter here"
+                matInput
+                required
+              />
+            </mat-form-field>
+  
+            <!-- description field  -->
+  
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Enter Description </mat-label>
+              <textarea
+                [(ngModel)]="eventForm.description"
+                type="text"
+                name="description"
+                placeholder="Enter here"
+                matInput
+                rows="5"
+              ></textarea>
+            </mat-form-field>
+  
+            <div class="row">
+              <div class="col-md-6">
+                <!-- //max marks -->
+                <mat-form-field appearance="outline" class="w100">
+                    <mat-label>Event Status</mat-label>
+                    <mat-select name="category" [(ngModel)]="eventForm.eventStatus">
+                      <mat-option *ngFor="let status of eventStatus" [value]="status.status">
+                        {{ status.status }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <!-- number of question to be shown  -->
+                <mat-form-field appearance="outline" class="w100">
+                    <mat-label>Event Category</mat-label>
+                    <mat-select name="category" [(ngModel)]="eventForm.eventCategory">
+                      <mat-option *ngFor="let category of eventCategory" [value]="category.type">
+                        {{ category.type }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+            </div>
+  
+            <div class="container text-center">
+              <button mat-raised-button color="accent" type="submit">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  
+  

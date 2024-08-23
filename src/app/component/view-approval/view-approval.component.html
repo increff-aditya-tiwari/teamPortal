@@ -1,0 +1,59 @@
+<div class="bootstrap-wrapper mt20 mb20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container text-center" *ngIf="approvalList.length ==0">
+                <h1>No Pending Aproval</h1>
+            </div>
+
+            <mat-card *ngFor="let approval of approvalList" class="mt20">
+                <!-- {{participant|json}} -->
+                <mat-card-content>
+                    <!-- <p>
+              <b> {{participant.participantName}}</b> 
+              <span class="ml20" [innerHTML]="participant.content"></span>
+            </p> -->
+
+                    <div class="container-fluid mt10">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><b>Event Category : </b> {{approval.eventCategory}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><b>Requested At : </b> {{ approval.createdAt }}</p>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </div>
+                </mat-card-content>
+                <mat-card-action>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form class="example-form">                      
+                                <mat-form-field class="w100">
+                                  <mat-label>Leave a Remarks</mat-label>
+                                  <textarea matInput placeholder="Ex. Please Attach Files in Proper Formate" 
+                                  [(ngModel)]="updateClaimApprovalForm.remarks"
+                                  name="remarks"
+                                  ></textarea>
+                                </mat-form-field>
+                            </form>
+                            
+                        </div>
+                        <div class="col-md-6 mt20">
+                            <button mat-raised-button (click)="rejectRequest(approval.id)" color="warn">
+                                Reject
+                            </button>
+                            <button mat-raised-button color="accent" class="ml10" (click)="approveRequest(approval.id)">
+                                Approve
+                            </button>
+                            <button mat-raised-button color="accent" class="ml10" (click)="seeDetail(approval.claimId)">
+        
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                </mat-card-action>
+            </mat-card>
+        </div>
+    </div>
+</div>

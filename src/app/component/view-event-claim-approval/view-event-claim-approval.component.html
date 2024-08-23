@@ -1,0 +1,40 @@
+
+<div class="bootstrap-wrapper mt20 mb20">
+    <div class="row">
+      <div class="col-md-12">
+  
+        <mat-card *ngFor="let approval of approvalList;let i = index" class="mt20">
+          <!-- {{user|json}} -->
+          <mat-card-content>
+            <p>
+              <b> Approval : </b> {{i+1}}
+              <button mat-icon-button [ngClass]="getButtonClass(approval.approvalStatus)" class="pb30">
+                <mat-icon>{{ getIconName(approval.approvalStatus) }}</mat-icon>
+              </button>
+              <span class="ml20" [innerHTML]="approval.content"></span>
+            </p>
+  
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>Approval Pending On User :  </b> {{approval.approvalRequiredBy}}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>Approval Status :  </b> {{approval.approvalStatus}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>Approval Stage :  </b> {{ approval.approvalStage }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>Remarks :  </b> {{approval.remarks}}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  

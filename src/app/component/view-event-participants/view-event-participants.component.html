@@ -1,0 +1,52 @@
+
+<div class="bootstrap-wrapper mt20 mb20">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container text-center" *ngIf="!forApproval">
+          <button
+            mat-raised-button
+            color="accent"
+            [routerLink]="'/admin/add-event-participant/' + eventId"
+            *ngIf="currentUser == eventOrganiser"
+          >
+            Add Participants
+          </button>
+        </div>
+  
+        <mat-card *ngFor="let participant of participantsList" class="mt20">
+          <!-- {{participant|json}} -->
+          <mat-card-content>
+            <!-- <p>
+              <b> {{participant.participantName}}</b> 
+              <span class="ml20" [innerHTML]="participant.content"></span>
+            </p> -->
+  
+            <div class="container-fluid mt10">
+              <div class="row">
+                <div class="col-md-6" >
+                  <p><b>Participant Type :  </b> {{participant.participantType}}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>Name :  </b> {{ participant.participantName }}</p>
+                </div>
+              </div>
+              <mat-divider *ngIf="eventOrganiser == currentUser && participant.participantId != eventOrganiser && !forApproval"></mat-divider>
+            </div>
+          </mat-card-content>
+  
+          <mat-card-action>
+            <button  mat-raised-button (click)="deletEventParticipant(eventId,participant.participantId,participant.participantType)" color="warn" *ngIf="eventOrganiser == currentUser && participant.participantId != eventOrganiser && !forApproval">
+              Remove
+            </button>
+            <button  mat-raised-button color="accent" *ngIf="participant.participantCreatedBy" class="ml10" 
+            [routerLink] = "'/admin/view-team-members/' + participant.participantId + '/' + participant.participantCreatedBy"
+            [queryParams]="{'forApproval': forApproval}"
+            > 
+                Members
+              </button>
+          </mat-card-action>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  

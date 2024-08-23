@@ -1,0 +1,63 @@
+<mat-card>
+    <h1>Add New Expense</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form (ngSubmit)="addExpense()">
+                    <!-- title field  -->
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w100">
+                                <mat-label>Invoice No</mat-label>
+                                <input [(ngModel)]="expenseForm.invoiceNo" type="text" name="invoiceNo"
+                                    placeholder="Enter here" matInput required />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w100">
+                                <mat-label>Invoice Date</mat-label>
+                                <input matInput [(ngModel)]="expenseForm.invoiceDate" name="invoiceDate"
+                                    placeholder="Enter here" [matDatepicker]="picker" required />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w100">
+                                <mat-label>Expense Amount</mat-label>
+                                <input [(ngModel)]="expenseForm.expenseAmount" type="number" name="expenseAmount"
+                                    placeholder="Enter here" matInput required />
+                            </mat-form-field>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w100">
+                                <mat-label>FileName</mat-label>
+                                <input [(ngModel)]="expenseForm.attachment" type="text" name="attachment"
+                                    placeholder="Enter here" matInput required />
+                            </mat-form-field>
+                        </div> -->
+                        <div class="col-md-6">
+                            <mat-label>Expense Attachment</mat-label>
+                            <input class="mt10" type="file" (change)="onFileSelected($event)" />
+                        </div>
+                        
+                    </div>
+
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label>Enter Description </mat-label>
+                        <textarea [(ngModel)]="expenseForm.description" type="text" name="description"
+                            placeholder="Enter here" matInput rows="5" required></textarea>
+                    </mat-form-field>                        
+                    
+                    <div class="container text-center">
+                        <button mat-raised-button color="accent" type="submit">Add</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</mat-card>

@@ -1,0 +1,31 @@
+<mat-card>
+    <h1>{{teams.length === 0 ? 'Please Add Team To See Here':'All Teams'}}</h1>
+    <mat-list>
+      <mat-list-item *ngFor="let team of teams">
+        <mat-icon mat-list-icon>group_work</mat-icon>
+        <div mat-line>{{team.teamName}}</div>
+        <div mat-line>{{team.description}}</div>
+        <mat-divider></mat-divider>
+        
+        <button  mat-flat-button color="accent"  *ngIf="!hasJoinedTeam(team.teamId)" class="ml10" (click)="addMember(team.teamId)">
+            Join Team
+          </button>
+          <button  mat-stroked-button color="accent" *ngIf="currentUserId == team.createdBy"  class="ml10"  [routerLink]="'/admin/view-team-requests/' + team.teamId">
+            Requests
+          </button>
+          <button  mat-stroked-button color="accent" *ngIf="currentUserId == team.createdBy" class="ml10" [routerLink]="'/admin/add-team-member/' + team.teamId">
+            Add Member
+          </button>
+          <button  mat-flat-button color="accent" class="ml10" [routerLink] = "'/admin/view-team-members/' + team.teamId + '/' + team.createdBy">
+            Members
+          </button>
+      </mat-list-item>
+    </mat-list>
+  
+    <div class="container text-center mt20">
+      <button routerLink="/admin/create-team" mat-fab color="accent">
+        <mat-icon mat-list-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+  

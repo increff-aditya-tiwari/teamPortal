@@ -1,0 +1,70 @@
+<!-- <h1>this is navbar</h1> -->
+<mat-toolbar color="accent">
+    <a
+      routerLink="/admin/profile"
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon style="padding-bottom: 29px;">diversity_3</mat-icon>
+    </a>
+    <span>TeamPortal</span>
+    <span class="example-spacer"></span>
+    
+  
+    <button
+      (click)="logout()"
+      *ngIf="userService.isLoggedIn()"
+      mat-button
+      class="example-icon favorite-icon mr10"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26">logout</mat-icon>
+      Logout
+    </button>
+  
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="example-icon favorite-icon ml10"
+      mat-button
+      routerLink="/admin/profile"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26">account_circle</mat-icon>
+      {{ userService.getUser().username.toUpperCase() }}
+    </button>
+    <button
+      *ngIf="userService.isLoggedIn()"
+      mat-button
+      class="example-icon favorite-icon no-hover"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26" [matBadge]="notifications" >notifications</mat-icon>
+      
+    </button>
+
+    <button
+      *ngIf="!userService.isLoggedIn()"
+      [routerLink]="'/login'"
+      mat-button
+      class="example-icon favorite-icon mr10"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26">login</mat-icon>
+      Login
+    </button>
+  
+    <button
+      *ngIf="!userService.isLoggedIn()"
+      [routerLink]="'/signup'"
+      mat-button
+      class="example-icon favorite-icon ml10"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26">how_to_reg</mat-icon>
+      Register
+    </button>
+
+
+  </mat-toolbar>
+  

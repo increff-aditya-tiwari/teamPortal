@@ -1,0 +1,36 @@
+<mat-card>
+    <h1>Select Participant</h1>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <form (ngSubmit)="addParticipants()">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w100">
+                  <mat-label>Select Participant Type</mat-label>
+                  <mat-select name="participantType" [(ngModel)]="type" (selectionChange)="onTypeChange($event.value)">
+                    <mat-option *ngFor="let type of participantType" [value]="type.type" >
+                      {{ type.type }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w100">
+                  <mat-label>Select Participant</mat-label>
+                  <mat-select name="userIds" [(ngModel)]="selectedParticipant" multiple>
+                    <mat-option *ngFor="let participant of allParticipantsList" [value]="type == 'TEAM' ? participant.teamId : participant.userId">
+                      {{ type == "TEAM" ? participant.teamName : participant.username }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="container text-center">
+              <button mat-stroked-button color="accent" type="submit">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </mat-card>

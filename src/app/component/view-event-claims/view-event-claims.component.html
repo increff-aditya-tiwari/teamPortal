@@ -1,0 +1,64 @@
+
+<div class="bootstrap-wrapper mt20 mb20">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container text-center" *ngIf="!forApproval">
+          <button
+            mat-raised-button
+            color="accent"
+            (click) = "addClaim()"
+          >
+            Add Claim
+          </button>
+        </div>
+  
+        <mat-card *ngFor="let claim of claimList; let i = index" class="mt20">
+          <!-- {{user|json}} -->
+          <mat-card-content>
+            <div class="row">
+                <div class="col">
+
+                    <p>
+                      <b>Claim : </b> {{i+1}}
+                      <button mat-icon-button [ngClass]="getButtonClass(claim.claimStatus)" class="pb30">
+                        <mat-icon>{{ getIconName(claim.claimStatus) }}</mat-icon>
+                      </button>
+                      <span class="ml20" [innerHTML]="claim.content"></span>
+                    </p>
+                </div>
+            </div>
+            
+  
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>
+                    Expenses : 
+                  </b> {{claim.totalExpenseAmount}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>
+                        Status : 
+                      </b> {{claim.claimStatus}}</p>
+                </div>
+              </div>
+              <mat-divider ></mat-divider>
+            </div>
+          </mat-card-content>
+  
+          <mat-card-action>
+            <button  mat-raised-button  color="accent" 
+            [routerLink]="'/admin/view-event-claim-expenses/'+ eventOrganiser + '/' + claim.claimId"
+            [queryParams]="{'forApproval': forApproval}"
+            >
+              View Expense
+            </button>
+            <button  mat-raised-button  color="accent" class="ml10" [routerLink] = "'/admin/view-event-claim-approval/' + eventId + '/' + claim.claimId" *ngIf="currentUser == eventOrganiser && !forApproval">
+                View Approvals
+              </button>
+
+          </mat-card-action>
+        </mat-card>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,53 @@
+
+<div class="bootstrap-wrapper mt20 mb20">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="container text-center" *ngIf="!forApproval">
+        <button
+          mat-raised-button
+          color="accent"
+          [routerLink]="'/admin/add-team-member/' + teamId"
+          *ngIf="currentUser == teamCreatedBy"
+        >
+          Add Member
+        </button>
+      </div>
+
+      <mat-card *ngFor="let user of userList" class="mt20">
+        <!-- {{user|json}} -->
+        <mat-card-content>
+          <p>
+            <b> {{user.username}}</b> 
+            <span class="ml20" [innerHTML]="user.content"></span>
+          </p>
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6">
+                <p><b>Name :  </b> {{user.fullName}}</p>
+              </div>
+              <div class="col-md-6">
+                <p><b>Contact :  </b> {{ user.contactNo }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p><b>Email :  </b> {{ user.email }}</p>
+              </div>
+              <div class="col-md-6">
+                <p><b>User ID :  </b> {{ user.userId }}</p>
+              </div>
+            </div>
+            <mat-divider *ngIf="teamCreatedBy == currentUser && user.userId != teamCreatedBy && !forApproval"></mat-divider>
+          </div>
+        </mat-card-content>
+
+        <mat-card-action>
+          <button  mat-raised-button (click)="removeTeamMember(teamId,user.userId)" color="warn" *ngIf="teamCreatedBy == currentUser && user.userId != teamCreatedBy && !forApproval">
+            Remove
+          </button>
+        </mat-card-action>
+      </mat-card>
+    </div>
+  </div>
+</div>

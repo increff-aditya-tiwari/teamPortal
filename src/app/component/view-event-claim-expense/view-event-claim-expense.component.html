@@ -1,0 +1,63 @@
+
+<div class="bootstrap-wrapper mt20 mb20">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container text-center" *ngIf="currentUser == eventOrganiser && !forApproval">
+          <button
+            mat-raised-button
+            color="accent"
+            [routerLink] = "'/admin/add-event-claim-expense/' + eventOrganiser + '/' + claimId"
+            
+          >
+            Add Expense
+          </button>
+        </div>
+  
+        <mat-card *ngFor="let expense of expenseList; let i = index" class="mt20">
+          <!-- {{user|json}} -->
+          <mat-card-content>
+            <p>
+              <b> Expense : </b> {{i+1}}
+              <span class="ml20" [innerHTML]="expense.content"></span>
+            </p>
+  
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>Expesnse Amount :  </b> {{expense.expenseAmount}}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>Invoice No :  </b> {{ expense.invoiceNo }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>Attachment :  </b> {{ expense.attachment }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>Invoice Date :  </b> {{expense.invoiceDate}}</p>
+                </div>
+              </div>
+              <mat-divider *ngIf="currentUser == eventOrganiser && !forApproval"></mat-divider>
+            </div>
+          </mat-card-content>
+  
+          <mat-card-action>
+            <button  mat-raised-button  color="warn" (click)="removeClaimExpense(expense.expenseId)"
+            *ngIf="currentUser == eventOrganiser && !forApproval"
+            >
+              Remove
+            </button>
+            <button  mat-raised-button  color="accent" class="ml10" 
+            [routerLink] = "'/admin/update-event-claim-expenses/' + eventOrganiser + '/' + claimId + '/' + expense.expenseId"
+            [queryParams]="{expense:'expense'}"
+            *ngIf="currentUser == eventOrganiser && !forApproval"
+            >
+                Update
+              </button>
+          </mat-card-action>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  
