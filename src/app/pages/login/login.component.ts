@@ -22,9 +22,10 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-
-  formSubmit() {
-    console.log(this.loginData);
+  private webSocket: WebSocket;
+  notificationsList = [];
+  formSubmit  ()  {
+    // console.log(this.loginData);
 
     if (
       this.loginData.username.trim() == '' ||
@@ -46,32 +47,38 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    // // request to server to generate token
     this.userService.userLogin(this.loginData).subscribe(
       (user: any) => {
-        console.log('success');
+        // console.log('success');
         console.log(user);
-        this.userService.loginStatusSubject.next(true);
+        
 
         // login...
         this.userService.setUserToken(user.jwtToken);
         this.userService.setUser(user);
+        this.userService.loginStatusSubject.next(true);
         let access = this.userService.getUserAccess()
-        const hasAdminAuthority = access.some(auth => auth.authority === "admin");
-        if(hasAdminAuthority){
+        document.cookie = `jwtToken=${user.jwtToken}`;
+        const hasNormalAuthority = access.some(auth => auth.authority === "normal");
+        if(hasNormalAuthority){
           this.router.navigate(['admin/teams']);
-          this.userService.loginStatusSubject.next(true);
         }else{
           
           this.router.navigate(['user-dashboard']);
-          this.userService.loginStatusSubject.next(true);
         }
+        // this.webSocket = new WebSocket(`ws://localhost:8080/send-notification/${user.jwtToken}`);
+        // this.webSocket.onmessage = (event) => {
+        //   // console.log("this is data ",event.data);
+        //   this.notificationsList.push(JSON.parse(event.data));
+        //   // this.notifications
+        //   console.log("this is stock data ", this.notificationsList)
+        // };
       },
       (error) => {
         console.log("call failed")
         console.log('Error !');
-        console.log(error);
-        this.snack.open(error.error, '', {
+        console.log(error.error);
+        this.snack.open(error.error.message, '', {
           duration: 3000,
         });
       }

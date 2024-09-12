@@ -1,0 +1,18 @@
+<div class="custom-noti">
+  <div mat-dialog-title>
+    <h1 style="color: #3b78ad;">Notifications</h1>
+    <!-- <button mat-button>menu</button> -->
+  </div>
+  <mat-divider></mat-divider>
+  <div mat-dialog-content class="notification-container">
+    <mat-list>
+      <mat-list-item *ngFor="let notification of notifications" (click)="redirectFromNotification(notification)" class="custom-notification-item">
+        <mat-icon class="custom-icon">notification_important</mat-icon>
+        <div class="custom-notification-content">
+          <h4 mat-line>{{ notification.notificationRelation }} : {{ notification.notificationType }}</h4>
+          <p mat-line>{{ notification.notificationDescription }}</p>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

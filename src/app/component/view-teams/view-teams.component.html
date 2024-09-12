@@ -1,29 +1,31 @@
 <mat-card>
-    <h1>{{teams.length === 0 ? 'Please Add Team To See Here':'All Teams'}}</h1>
+    <h1>{{teams?.length === 0 ? 'Please Add Team To See Here':'All Teams'}}</h1>
     <mat-list>
       <mat-list-item *ngFor="let team of teams">
         <mat-icon mat-list-icon>group_work</mat-icon>
         <div mat-line>{{team.teamName}}</div>
         <div mat-line>{{team.description}}</div>
         <mat-divider></mat-divider>
-        
-        <button  mat-flat-button color="accent"  *ngIf="!hasJoinedTeam(team.teamId)" class="ml10" (click)="addMember(team.teamId)">
+        <button  mat-stroked-button color="accet" class="ml10 strocked-btn"  *ngIf="currentUserId != team.createdBy" [matBadge] = "team.invites && team!.invites!.length ? team?.invites.length : ''"   (click)="navigateToInviteRequests(team,'INVITE')" [matBadgeColor]="accent">
+            Invites
+          </button>
+        <button  mat-flat-button color="accet"  *ngIf="!hasJoinedTeam(team.teamId)" class="ml10 flat-btn" (click)="addMember(team.teamId)">
             Join Team
           </button>
-          <button  mat-stroked-button color="accent" *ngIf="currentUserId == team.createdBy"  class="ml10"  [routerLink]="'/admin/view-team-requests/' + team.teamId">
+          <button  mat-stroked-button color="acent"  *ngIf="currentUserId == team.createdBy" [matBadge] = "team.requests && team!.requests!.length ? team?.requests.length : ''"  class="ml10 strocked-btn"  (click)="navigateToInviteRequests(team,'REQUEST')">
             Requests
           </button>
-          <button  mat-stroked-button color="accent" *ngIf="currentUserId == team.createdBy" class="ml10" [routerLink]="'/admin/add-team-member/' + team.teamId">
+          <button  mat-stroked-button color="accnt" *ngIf="currentUserId == team.createdBy" class="ml10 strocked-btn" [routerLink]="'/admin/add-team-member/' + team.teamId">
             Add Member
           </button>
-          <button  mat-flat-button color="accent" class="ml10" [routerLink] = "'/admin/view-team-members/' + team.teamId + '/' + team.createdBy">
+          <button  mat-flat-button color="accen"  class="ml10 flat-btn" [routerLink] = "'/admin/view-team-members/' + team.teamId + '/' + team.createdBy">
             Members
           </button>
       </mat-list-item>
     </mat-list>
   
     <div class="container text-center mt20">
-      <button routerLink="/admin/create-team" mat-fab color="accent">
+      <button routerLink="/admin/create-team" mat-fab color="accnt" class="flat-btn">
         <mat-icon mat-list-icon>add</mat-icon>
       </button>
     </div>

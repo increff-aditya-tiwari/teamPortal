@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Route, Router, RouterLink } from '@angular/router';
 import { error } from 'console';
+import { ClaimService } from 'src/app/service/claimService/claim.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import Swal from 'sweetalert2';
 
@@ -12,11 +13,16 @@ import Swal from 'sweetalert2';
 })
 export class ViewApprovalComponent implements OnInit {
 
-  constructor(private standardService : StandardService,private router:Router,private _snack:MatSnackBar) { }
+  constructor(
+    private standardService : StandardService,
+    private claimSerivice : ClaimService,
+    private router:Router,
+    private _snack:MatSnackBar
+  ) { }
   approvalList=[]
   claim;
   getAllPendingApprovals(){
-    this.standardService.getAllPendingApprovals().subscribe(
+    this.claimSerivice.getAllPendingApprovals().subscribe(
       (data: any) => {
         
         this.approvalList=data
@@ -39,7 +45,7 @@ export class ViewApprovalComponent implements OnInit {
 
   }
   seeDetail(claimId): void {
-    this.standardService.getClaimById(claimId).subscribe(
+    this.claimSerivice.getClaimById(claimId).subscribe(
       (data)=>{
         // console.log(data);
         this.claim = data;
@@ -53,7 +59,9 @@ export class ViewApprovalComponent implements OnInit {
     
   }
   claimApprovalUpdate(updateClaimApprovalForm){
-    this.standardService.claimApprovalUpdate(updateClaimApprovalForm).subscribe(
+    console.log("updateClaimApprovalForm ",updateClaimApprovalForm)
+    this.claimSerivice.claimApprovalUpdate(updateClaimApprovalForm).subscribe(
+      
       (data)=>{
         this._snack.open('Claim Updated ', '', {
           duration: 3000,

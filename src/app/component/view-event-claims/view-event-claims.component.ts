@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { ClaimService } from 'src/app/service/claimService/claim.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
@@ -15,11 +16,17 @@ export class ViewEventClaimsComponent implements OnInit {
   eventId;
   currentUser;
   eventOrganiser;
-  constructor(private activeRoute:ActivatedRoute,private standardService : StandardService,private _snack:MatSnackBar,private userService:UserService) { }
+  constructor(
+    private activeRoute:ActivatedRoute,
+    private standardService : StandardService,
+    private claimSerivice : ClaimService,
+    private _snack:MatSnackBar,
+    private userService:UserService
+  ) { }
   claimList = []
 
   getAllEventClaims(){
-    this.standardService.getEventClaims(this.eventId).subscribe(
+    this.claimSerivice.getEventClaims(this.eventId).subscribe(
       (data: any) => {
         
         this.claimList = data;
@@ -69,7 +76,7 @@ export class ViewEventClaimsComponent implements OnInit {
   }
   forApproval;
   addClaim(){
-    this.standardService.addClaim(this.eventId).subscribe(
+    this.claimSerivice.addClaim(this.eventId).subscribe(
       (data)=>{
         this._snack.open('Claim Added ', '', {
           duration: 3000,
@@ -77,7 +84,7 @@ export class ViewEventClaimsComponent implements OnInit {
         this.getAllEventClaims();
       },
       (error)=>{
-        Swal.fire('Something Went Wrong ', error.error, 'error');
+        Swal.fire('Something Went Wrong ', error.error.message, 'error');
       }
     )
   }

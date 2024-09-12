@@ -12,11 +12,12 @@ export class NormalUserGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       let access = this.userService.getUserAccess()
-      const hasAdminAuthority = access.some(auth => auth.authority === "admin");
-    if (this.userService.isLoggedIn() && !hasAdminAuthority) {
+      const hasNormalAuthority = access?.some(auth => auth.authority === "normal");
+    if (hasNormalAuthority) {
       // this.router.navigate(['user-dashboard']);
       return true
       }
+      // console.log("going backe to login ")
       this.router.navigate(['login']);
       return false;
   }

@@ -5,7 +5,8 @@
         <div class="container text-center" *ngIf="!forApproval">
           <button
             mat-raised-button
-            color="accent"
+            color="accen"
+            class="flat-btn"
             (click) = "addClaim()"
           >
             Add Claim
@@ -47,13 +48,13 @@
           </mat-card-content>
   
           <mat-card-action>
-            <button  mat-raised-button  color="accent" 
+            <button  mat-raised-button  color="accet" class="flat-btn" 
             [routerLink]="'/admin/view-event-claim-expenses/'+ eventOrganiser + '/' + claim.claimId"
             [queryParams]="{'forApproval': forApproval}"
             >
               View Expense
             </button>
-            <button  mat-raised-button  color="accent" class="ml10" [routerLink] = "'/admin/view-event-claim-approval/' + eventId + '/' + claim.claimId" *ngIf="currentUser == eventOrganiser && !forApproval">
+            <button  mat-raised-button  color="acent" class="ml10 flat-btn" [routerLink] = "'/admin/view-event-claim-approval/' + eventId + '/' + claim.claimId" *ngIf="currentUser == eventOrganiser && !forApproval">
                 View Approvals
               </button>
 

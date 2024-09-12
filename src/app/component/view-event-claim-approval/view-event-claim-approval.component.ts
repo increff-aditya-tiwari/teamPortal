@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ClaimService } from 'src/app/service/claimService/claim.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import Swal from 'sweetalert2';
 
@@ -10,12 +11,16 @@ import Swal from 'sweetalert2';
 })
 export class ViewEventClaimApprovalComponent implements OnInit {
 
-  constructor(private standardService:StandardService,private activeRoute:ActivatedRoute) { }
+  constructor(
+    private standardService:StandardService,
+    private claimSerivice : ClaimService,
+    private activeRoute:ActivatedRoute
+  ) { }
   claimId;
   approvalList = []
 
   getAllClaimApprovals(){
-    this.standardService.getAllClaimApprovals(this.claimId).subscribe(
+    this.claimSerivice.getAllClaimApprovals(this.claimId).subscribe(
       (data: any) => {
         
         this.approvalList = data;

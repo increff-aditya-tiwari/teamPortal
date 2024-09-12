@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { StandardService } from 'src/app/service/standard/standard.service';
+import { TeamService } from 'src/app/service/teamService/team.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
 
@@ -17,7 +17,7 @@ export class AddTeamMemberComponent implements OnInit {
   constructor(private userService:UserService
     ,private activeRoute:ActivatedRoute,
     private _snack : MatSnackBar,
-    private standardService:StandardService
+    private teamService:TeamService
   ) { }
 
 
@@ -38,9 +38,9 @@ export class AddTeamMemberComponent implements OnInit {
         return;
       }
 
-      this.standardService.mapUserTeam(this.mapUserTeamForm).subscribe(
+      this.teamService.mapUserTeam(this.mapUserTeamForm).subscribe(
         (data) => {
-          Swal.fire('Success', 'Members are added', 'success');
+          Swal.fire('Success', 'Members are Invited To Join the Team', 'success');
           this.mapUserTeamForm = {
             teamId:'',
             userIds:[]
@@ -48,7 +48,7 @@ export class AddTeamMemberComponent implements OnInit {
         },
   
         (error) => {
-          Swal.fire('Error!! ', 'Error while adding member', 'error');
+          Swal.fire('Error!! ', error.error.message, 'error');
           console.log(error);
         }
       );

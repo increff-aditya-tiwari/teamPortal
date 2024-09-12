@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EventService } from 'src/app/service/eventService/event.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import Swal from 'sweetalert2';
 
@@ -10,7 +11,9 @@ import Swal from 'sweetalert2';
 })
 export class AddEventComponent implements OnInit {
 
-  constructor(private _snack : MatSnackBar,private standardService:StandardService) { }
+  constructor(private _snack : MatSnackBar
+    ,private standardService:StandardService
+    ,private eventService : EventService) { }
 
   eventForm = {
     eventName: '',
@@ -62,7 +65,7 @@ export class AddEventComponent implements OnInit {
         return;
       }
 
-      this.standardService.addEvent(this.eventForm).subscribe(
+      this.eventService.addEvent(this.eventForm).subscribe(
         () => {
           Swal.fire('Success', 'Event is added', 'success');
           this.eventForm = {

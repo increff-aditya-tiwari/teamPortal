@@ -5,14 +5,15 @@
         <div class="container text-center">
           <button
             mat-raised-button
-            color="accent"
+            color="accet"
+            class="flat-btn"
             [routerLink]="'/admin/add-team-member/' + teamId"
           >
             Add Members
           </button>
         </div>
   
-        <mat-card *ngFor="let rq of requestList" class="mt20">
+        <mat-card *ngFor="let rq of requestInviteList" class="mt20">
           <!-- {{participant|json}} -->
           <mat-card-content>
             <!-- <p>
@@ -23,7 +24,7 @@
             <div class="container-fluid mt10">
               <div class="row">
                 <div class="col-md-6" >
-                  <p><b>Request Status :  </b> {{rq.requestStatus}}</p>
+                  <p><b>Request Category :  </b> {{rq.requestCategory}}</p>
                 </div>
                 <div class="col-md-6">
                   <p><b>User ID :  </b> {{ rq.requestBy }}</p>
@@ -37,7 +38,7 @@
             <button  mat-raised-button (click)="declineRequest(rq.id)" color="warn" >
               Decline
             </button>
-            <button  mat-raised-button color="accent"  class="ml10" (click)="acceptRequest(rq.id)"> 
+            <button  mat-raised-button color="accet"  class="ml10 flat-btn" (click)="acceptRequest(rq.id)"> 
                 Accept
               </button>
           </mat-card-action>

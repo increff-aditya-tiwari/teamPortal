@@ -5,7 +5,8 @@
         <div class="container text-center" *ngIf="currentUser == eventOrganiser && !forApproval">
           <button
             mat-raised-button
-            color="accent"
+            color="accen"
+            class="flat-btn"
             [routerLink] = "'/admin/add-event-claim-expense/' + eventOrganiser + '/' + claimId"
             
           >
@@ -20,7 +21,6 @@
               <b> Expense : </b> {{i+1}}
               <span class="ml20" [innerHTML]="expense.content"></span>
             </p>
-  
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-6">
@@ -32,8 +32,19 @@
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <p><b>Attachment :  </b> {{ expense.attachment }}</p>
+
+                  <p><b>Attachment :  </b> 
+                    <a href="javascript:void(0)" (click)="openFilePreview(expense)" style="text-decoration: none;">
+                      {{ expense.attachmentFileName }}
+                    </a>
+                  </p>
+                  <!-- <p><b>Attachment:</b> 
+                    <button mat-raised-button (click)="previewImage(expense.attachment)">
+                      Preview Image
+                    </button>
+                  </p> -->
                 </div>
+                <!-- <iframe *ngIf="imagePreviewUrl" [src]="'data:image/png;base64,'+expense.attachment" alt="Attachment Preview" width="200px" /> -->
                 <div class="col-md-6">
                   <p><b>Invoice Date :  </b> {{expense.invoiceDate}}</p>
                 </div>
@@ -48,7 +59,7 @@
             >
               Remove
             </button>
-            <button  mat-raised-button  color="accent" class="ml10" 
+            <button  mat-raised-button  color="accnt" class="ml10 flat-btn" 
             [routerLink] = "'/admin/update-event-claim-expenses/' + eventOrganiser + '/' + claimId + '/' + expense.expenseId"
             [queryParams]="{expense:'expense'}"
             *ngIf="currentUser == eventOrganiser && !forApproval"

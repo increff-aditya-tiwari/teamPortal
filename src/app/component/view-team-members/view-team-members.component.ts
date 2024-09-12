@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { StandardService } from 'src/app/service/standard/standard.service';
+import { TeamService } from 'src/app/service/teamService/team.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
 
@@ -21,6 +22,7 @@ export class ViewTeamMembersComponent implements OnInit {
     private activeRoute: ActivatedRoute, 
     private _snack:MatSnackBar,
     private standardService:StandardService,
+    private teamService : TeamService,
     private userService : UserService
   ) { }
   forApproval;
@@ -34,7 +36,7 @@ export class ViewTeamMembersComponent implements OnInit {
     this.currentUser = this.userService.getUser().userId;
     // console.log("this is event orv ",this.teamCreatedBy," this si currentuser ",this.currentUser)
     console.log(this.teamCreatedBy)
-    this.standardService.getTeamMembers(this.teamId).subscribe(
+    this.teamService.getTeamMembers(this.teamId).subscribe(
       (data: any) => {
         console.log(data);
         this.userList = data;
@@ -60,7 +62,7 @@ export class ViewTeamMembersComponent implements OnInit {
           teamId:teamId,
           userId:userId
         }
-        this.standardService.removeTeamMember(deleteTeamMemberFrom).subscribe(
+        this.teamService.removeTeamMember(deleteTeamMemberFrom).subscribe(
           (data) => {
             this._snack.open('Member Deleted ', '', {
               duration: 3000,

@@ -20,11 +20,12 @@ import { UserService } from '../userService/user.service';
       //add the jwt token (localStorage) request
       let authReq = req;
       const token = this.userService.getToken();
-      console.log('inside interceptor');
+    //   console.log('inside interceptor');
   
       if (token != null) {
         authReq = authReq.clone({
-          setHeaders: { Authorization: `Bearer ${token}` },
+          setHeaders: { 'Authorization': `Bearer ${token}` },
+          withCredentials:true
         });
       }
       return next.handle(authReq);

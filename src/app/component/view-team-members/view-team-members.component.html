@@ -5,7 +5,8 @@
       <div class="container text-center" *ngIf="!forApproval">
         <button
           mat-raised-button
-          color="accent"
+          color="accet"
+          class="flat-btn"
           [routerLink]="'/admin/add-team-member/' + teamId"
           *ngIf="currentUser == teamCreatedBy"
         >

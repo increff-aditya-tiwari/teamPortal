@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { error } from 'console';
-import { StandardService } from 'src/app/service/standard/standard.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TeamService } from 'src/app/service/teamService/team.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,25 +10,50 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-team-requests.component.css']
 })
 export class ViewTeamRequestsComponent implements OnInit {
-
   teamId;
+  teamData : any;
 
-  requestList = [];
-  constructor(private standardService:StandardService,private activeRoute:ActivatedRoute,private _snack:MatSnackBar) { }
+  requestInviteList = [];
+  requestType=""
+  constructor(
+    private teamService:TeamService
+    ,private activeRoute:ActivatedRoute
+    ,private _snack:MatSnackBar,
+    private router:Router
+  ) { }
   updateRequestForm = {
     requestDetailId : "",
     requestId : "",
     requestStatus:"",
   }
   allRequestForTeam(teamId){
-    this.standardService.allRequestForTeam(teamId).subscribe(
+    this.teamService.allRequestForTeam(teamId).subscribe(
       (data:any) => {
-        console.log("this is data ",data);
-        this.requestList = data;
+        console.log("this is request data ",data);
+        this.requestInviteList = data;
       },
   
       (error) => {
-        Swal.fire('Error!! ', error, 'error');
+        Swal.fire('Error!! ', error.error.message, 'error');
+        console.log(error);
+        // this.mapUserTeamForm = {
+        //   teamId:'',
+        //   userIds:[]
+        // };
+      }
+    );
+  }
+  private allInviteFromTeam(teamId){
+    this.teamService.allInvitesFromTeam(teamId).subscribe(
+      (data:any) => {
+        console.log("this is invite data ",data);
+        if(data){
+          this.requestInviteList.push(data);
+        }
+      },
+  
+      (error) => {
+        Swal.fire('Error!! ', error.error.message, 'error');
         console.log(error);
         // this.mapUserTeamForm = {
         //   teamId:'',
@@ -40,19 +64,26 @@ export class ViewTeamRequestsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.teamId = this.activeRoute.snapshot.params.teamId;
-    this.allRequestForTeam(this.teamId)
+    this.requestType = history.state.requestType;
+    if(this.requestType=='REQUEST'){
+      this.allRequestForTeam(this.teamId)
+    }else{
+      this.allInviteFromTeam(this.teamId)
+    }
+    // this.requestInviteList = this.teamData.requests;
+    console.log("this is team data ",this.requestInviteList);
 
   }
   updateRequest(updateRequestForm){
-    this.standardService.updateTeamJoinRequest(updateRequestForm).subscribe(
+    this.teamService.updateTeamJoinRequest(updateRequestForm).subscribe(
       (data)=>{
         this._snack.open('Request Updated ', '', {
           duration: 3000,
         });
-        this.requestList = this.requestList.filter((rq) => rq.id != updateRequestForm.requestDetailId);
+        this.requestInviteList = this.requestInviteList.filter((rq) => rq.id != updateRequestForm.requestDetailId);
       },
       (error)=>{
-        Swal.fire('Error!! ', error, 'error');
+        Swal.fire('Error!! ', error.error.message, 'error');
       }
     )
   }

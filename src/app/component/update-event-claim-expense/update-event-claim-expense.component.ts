@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ExpenseService } from 'src/app/service/expenseService/expense.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import Swal from 'sweetalert2';
 
@@ -13,6 +14,7 @@ export class UpdateEventClaimExpenseComponent implements OnInit {
 
   constructor(private activeRoute:ActivatedRoute,
     private standardService:StandardService,
+    private expenseService : ExpenseService,
     private _snack:MatSnackBar,
     private router: Router) { }
   expenseId;
@@ -20,7 +22,7 @@ export class UpdateEventClaimExpenseComponent implements OnInit {
   claimId;
   expense;
   getExpenseById(){
-    this.standardService.getExpenseById(this.expenseId).subscribe(
+    this.expenseService.getExpenseById(this.expenseId).subscribe(
       (data: any) => {
         
         this.expense = data;
@@ -43,7 +45,7 @@ export class UpdateEventClaimExpenseComponent implements OnInit {
 
   updateExpense(){
     console.log(this.expense);
-    this.standardService.updateExpense(this.expense).subscribe(
+    this.expenseService.updateExpense(this.expense).subscribe(
       (data) => {
         this._snack.open('Expense Updated ', '', {
           duration: 3000,

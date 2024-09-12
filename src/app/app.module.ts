@@ -47,7 +47,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatBadgeModule} from '@angular/material/badge'
 import { UpdateEventClaimExpenseComponent } from './component/update-event-claim-expense/update-event-claim-expense.component';
 import { ViewApprovalComponent } from './component/view-approval/view-approval.component';
-
+import { NotificationsComponent } from './component/notifications/notifications.component';
+import { FilePreviewComponent } from './component/file-preview/file-preview.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,9 @@ import { ViewApprovalComponent } from './component/view-approval/view-approval.c
     ViewEventClaimApprovalComponent,
     UpdateEventClaimExpenseComponent,
     ViewApprovalComponent,
+    NotificationsComponent,
+    FilePreviewComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -101,18 +106,20 @@ import { ViewApprovalComponent } from './component/view-approval/view-approval.c
     MatDatepickerModule,
     MatNativeDateModule,
     MatBadgeModule,
-    NgxUiLoaderModule.forRoot({
-      // bgsType:SPINNER.chasingDots
-      fgsType:'square-jelly-box'
-    }),
-    NgxUiLoaderHttpModule.forRoot({
-      showForeground:true
-      // bgsType: SPINNER.rectangleBounce
-      // bgsType:
-    }),
+    MatMenuModule
+    // NgxUiLoaderModule.forRoot({
+    //   // bgsType:SPINNER.chasingDots
+    //   fgsType:'square-jelly-box'
+    // }),
+    // NgxUiLoaderHttpModule.forRoot({
+    //   showForeground:true
+    //   // bgsType: SPINNER.rectangleBounce
+    //   // bgsType:
+    // }),
     
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

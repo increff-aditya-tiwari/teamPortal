@@ -5,7 +5,8 @@
         <div class="container text-center" *ngIf="!forApproval">
           <button
             mat-raised-button
-            color="accent"
+            color="accen"
+            class="flat-btn"
             [routerLink]="'/admin/add-event-participant/' + eventId"
             *ngIf="currentUser == eventOrganiser"
           >
@@ -38,7 +39,7 @@
             <button  mat-raised-button (click)="deletEventParticipant(eventId,participant.participantId,participant.participantType)" color="warn" *ngIf="eventOrganiser == currentUser && participant.participantId != eventOrganiser && !forApproval">
               Remove
             </button>
-            <button  mat-raised-button color="accent" *ngIf="participant.participantCreatedBy" class="ml10" 
+            <button  mat-raised-button color="accet" *ngIf="participant.participantCreatedBy" class="ml10 flat-btn" 
             [routerLink] = "'/admin/view-team-members/' + participant.participantId + '/' + participant.participantCreatedBy"
             [queryParams]="{'forApproval': forApproval}"
             > 

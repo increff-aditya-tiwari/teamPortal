@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { EventService } from 'src/app/service/eventService/event.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
+import { TeamService } from 'src/app/service/teamService/team.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
 
@@ -17,7 +19,9 @@ export class AddEventParticipantComponent implements OnInit {
   constructor(private userService:UserService,
     private activeRoute:ActivatedRoute,
     private _snack : MatSnackBar,
-    private standardService:StandardService
+    private standardService:StandardService,
+    private teamService: TeamService,
+    private eventService:EventService
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +30,8 @@ export class AddEventParticipantComponent implements OnInit {
 
   mapEventParticipantForm  = {
     eventId:"",
-    participantsInfoDataList:[
+    participantType:"",
+    participantIds:[
       
     ]
   };
@@ -56,40 +61,43 @@ export class AddEventParticipantComponent implements OnInit {
       return;
     }
     this.mapEventParticipantForm.eventId = this.eventId;
+    this.mapEventParticipantForm.participantType = this.type == "TEAM" ? "TEAM" : "INDIVIDUAL"
     this.selectedParticipant.forEach((participant) =>{
-      if(this.type == "TEAM"){
-        const localparticipantsInfoDataList = {
-          participantType:"TEAM",
-          participantId:participant
-        }
-        this.mapEventParticipantForm.participantsInfoDataList.push(localparticipantsInfoDataList);
-      }else{
-        const localparticipantsInfoDataList = {
-          participantType:"INDIVIDUAL",
-          participantId:participant
-        }
-        this.mapEventParticipantForm.participantsInfoDataList.push(localparticipantsInfoDataList);
-      }
+      this.mapEventParticipantForm.participantIds.push(participant);
+      // if(this.type == "TEAM"){
+      //   const localparticipantsInfoDataList = {
+      //     participantType:"TEAM",
+      //     participantId:participant
+      //   }
+      //   this.mapEventParticipantForm.participantsInfoDataList.push(localparticipantsInfoDataList);
+      // }else{
+      //   const localparticipantsInfoDataList = {
+      //     participantType:"INDIVIDUAL",
+      //     participantId:participant
+      //   }
+      //   this.mapEventParticipantForm.participantsInfoDataList.push(localparticipantsInfoDataList);
+      // }
     })
     console.log(this.mapEventParticipantForm)
-      this.standardService.mapEventParticipant(this.mapEventParticipantForm).subscribe(
+      this.eventService.mapEventParticipant(this.mapEventParticipantForm).subscribe(
         (data) => {
-          Swal.fire('Success', 'Participent are added', 'success');
+          Swal.fire('Success', 'Participent are Invited To Join the Event', 'success');
           this.mapEventParticipantForm = {
             eventId:'',
-            participantsInfoDataList:[]
+            participantType:'',
+            participantIds:[]
           };
         },
   
         (error) => {
-          Swal.fire('Error!! ', 'Error while adding Participent', 'error');
+          Swal.fire('Error!! ', error.error.message, 'error');
           console.log(error);
         }
       );
   }
 
   getAllTeamList(){
-    this.standardService.getAllTeams().subscribe(
+    this.teamService.getAllTeams().subscribe(
       (data: any) => {
         this.allParticipantsList = data;
       },
@@ -114,7 +122,8 @@ export class AddEventParticipantComponent implements OnInit {
     this.selectedParticipant = []
     this.mapEventParticipantForm = {
       eventId:'',
-      participantsInfoDataList:[]
+      participantType:'',
+      participantIds:[]
     };
     if(this.type == "TEAM"){
       this.getAllTeamList();

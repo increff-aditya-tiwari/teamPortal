@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { EventService } from 'src/app/service/eventService/event.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import Swal from 'sweetalert2';
 
@@ -13,7 +14,12 @@ export class ViewEventRequestsComponent implements OnInit {
 
   eventId;
   requestList = [];
-  constructor(private standardService:StandardService,private activeRoute:ActivatedRoute,private _snack:MatSnackBar) { }
+  eventRequestIntviteList = [];
+  requestType="";
+  constructor(private standardService:StandardService,
+    private eventService:EventService,
+    private activeRoute:ActivatedRoute,
+    private _snack:MatSnackBar) { }
   updateRequestForm = {
     requestDetailId : "",
     requestId : "",
@@ -21,14 +27,14 @@ export class ViewEventRequestsComponent implements OnInit {
   }
 
   allRequestForEvent(eventId){
-    this.standardService.allRequestForEvent(eventId).subscribe(
+    this.eventService.allRequestForEvent(eventId).subscribe(
       (data:any) => {
         console.log("this is data ",data);
-        this.requestList = data;
+        this.eventRequestIntviteList = data;
       },
   
       (error) => {
-        Swal.fire('Error!! ', error, 'error');
+        Swal.fire('Error!! ', error.error.message, 'error');
         console.log(error);
         // this.mapUserTeamForm = {
         //   teamId:'',
@@ -37,21 +43,46 @@ export class ViewEventRequestsComponent implements OnInit {
       }
     );
   }
+
+  private allInviteForEvent(eventId){
+    this.eventService.allInvitesFromEvent(eventId).subscribe(
+      (data:any) => {
+        // console.log("this is data ",data);
+        this.eventRequestIntviteList = data;
+      },
+  
+      (error) => {
+        Swal.fire('Error!! ', error.error.message, 'error');
+        console.log(error);
+        // this.mapUserTeamForm = {
+        //   teamId:'',
+        //   userIds:[]
+        // };
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.eventId = this.activeRoute.snapshot.params.eventId;
-    this.allRequestForEvent(this.eventId);
+    this.requestType = history.state.requestType;
+    if(this.requestType=='REQUEST'){
+      this.allRequestForEvent(this.eventId);
+    }else{
+      this.allInviteForEvent(this.eventId)
+    }
   }
 
   updateRequest(updateRequestForm){
-    this.standardService.updateEventJoinRequest(updateRequestForm).subscribe(
+    this.eventService.updateEventJoinRequest(updateRequestForm).subscribe(
       (data)=>{
         this._snack.open('Request Updated ', '', {
           duration: 3000,
         });
-        this.requestList = this.requestList.filter((rq) => rq.id != updateRequestForm.requestDetailId);
+        this.eventRequestIntviteList = this.eventRequestIntviteList.filter((rq) => rq.id != updateRequestForm.requestDetailId);
       },
       (error)=>{
-        Swal.fire('Error!! ', error, 'error');
+        console.log(error);
+        Swal.fire('Error!! ', error.error.message, 'error');
       }
     )
   }

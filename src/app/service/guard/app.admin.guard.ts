@@ -12,7 +12,7 @@ import { UserService } from '../userService/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard implements CanActivate {
+export class AppAdminGuard implements CanActivate {
   constructor(private userService: UserService, private router: Router) { }
 
   canActivate(
@@ -25,8 +25,8 @@ export class AdminGuard implements CanActivate {
     | UrlTree {
     if (this.userService.isLoggedIn()) {
       let access = this.userService.getUserAccess()
-      const hasAdminAuthority = access.some(auth => auth.authority == "admin");
-      if (hasAdminAuthority) {
+      const hasAppAdminAuthority = access.some(auth => auth.authority == "app.admin");
+      if (hasAppAdminAuthority) {
         return true;
       } else {
         this.router.navigate(['user-dashboard']);

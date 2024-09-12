@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as SockJS from 'sockjs-client';
+import { EventService } from 'src/app/service/eventService/event.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
@@ -13,7 +15,13 @@ export class ViewEventsComponent implements OnInit {
 
   joinedEvents: number[] = [];
 
-  constructor(private standardService:StandardService,public userService:UserService,private activeRoute:ActivatedRoute) { }
+  constructor(private standardService:StandardService,
+    private eventService:EventService
+    // ,private webSocketService: WebSocketService
+    ,public userService:UserService,
+    private activeRoute:ActivatedRoute,
+    private router:Router
+  ) { }
 
   currentUser;
 
@@ -28,7 +36,7 @@ export class ViewEventsComponent implements OnInit {
   };
 
   getAllEvents(){
-    this.standardService.getAllEvents().subscribe(
+    this.eventService.getAllEvents().subscribe(
       (data: any) => {
         this.events = data;
       },
@@ -40,7 +48,7 @@ export class ViewEventsComponent implements OnInit {
   }
 
   getParticipantEventList(){
-    this.standardService.getParticipantEventList(this.currentUser).subscribe(
+    this.eventService.getParticipantEventList(this.currentUser).subscribe(
       (data: any)=>{
         this.joinedEvents = data;
         // console.log(this.joinedEvents);
@@ -52,8 +60,8 @@ export class ViewEventsComponent implements OnInit {
   }
 
   getEventByEventId(){
-    this.standardService.getEventByEventId(this.eventId).subscribe(
-      (data: any) => {
+    this.eventService.getEventByEventId(this.eventId).subscribe(
+      (data) => {
         this.events.push(data)
       },
       (error) => {
@@ -62,6 +70,7 @@ export class ViewEventsComponent implements OnInit {
       }
     );
   }
+  notifications = [];
   
   ngOnInit(): void {
     this.activeRoute.queryParams.subscribe(params => {
@@ -76,7 +85,21 @@ export class ViewEventsComponent implements OnInit {
       this.getAllEvents()
       this.getParticipantEventList();
     }
+
+    // this.webSocketService.notifications$.subscribe(notification => {
+    //   console.log("this is notification ", notification);
+    //   this.notifications.push(notification);
+    // });
     
+  }
+  notify(){
+    this.standardService.notifyUser().subscribe(
+      (data) => {
+        console.log("notifying to user ",data);
+      },(error)=>{
+        console.log("this is error ",error.error);
+      }
+    )
   }
 
   hasJoinedEvent(eventId: number): boolean {
@@ -91,7 +114,7 @@ export class ViewEventsComponent implements OnInit {
     }
     this.mapEventParticipantForm.participantsInfoDataList.push(localparticipantsInfoDataList);
     console.log(this.mapEventParticipantForm)
-    this.standardService.joinEvent(this.mapEventParticipantForm).subscribe(
+    this.eventService.joinEvent(this.mapEventParticipantForm).subscribe(
      (data : string) => {
        Swal.fire('Success', 'You are Requested to join the Event', 'success');
        this.joinedEvents.push(eventId);
@@ -112,5 +135,52 @@ export class ViewEventsComponent implements OnInit {
      }
    );
    }
+
+   navigateToInviteRequests(event: any,category) {
+    this.router.navigate(['/admin/view-event-requests/', event.eventId], {
+      state: { requestType: category }
+    });
+  }
+
+   connectWebSocket(){
+    // var token = this.userService.getToken();
+    // var stompClient = Stomp.over(function(){
+    //   return new SockJS('http://localhost:8080/ws')
+    // });
+    // stompClient.connect({Authorization: `Bearer ${token}`}, (frame) =>{
+    //   console.log("connected ",frame);
+    // });
+
+   }
+  // connectWebSocket() {
+  //   // Create a SockJS instance
+  //   // const socket = new WebSocket('http://localhost:8080/server-side');
+    
+  //   // Create a STOMP client instance
+  //   // const stompClient = Stomp.over(socket);
+  //   const stompClient = Stomp.over(function(){
+  //     return new SockJS('http://localhost:15674/server-side')
+  //   });
+
+  
+  //   // Connect to the STOMP server
+  //   stompClient.connect({}, (frame) => {
+  //     console.log('Connected: ', frame);
+  
+  //     // Subscribe to a topic after connection is established
+  //     stompClient.subscribe('/topic/notifications', (message) => {
+  //       console.log('Received message: ', message.body);
+  //       // Process message here
+  //     });
+  //   }, (error) => {
+  //     console.error('STOMP error: ', error);
+  //   });
+  
+  //   // Optional: Handle WebSocket connection close
+  //   stompClient.connectHeaders = {
+  //     login: 'guest',
+  //     passcode: 'guest'
+  //   };
+  // }
 
 }

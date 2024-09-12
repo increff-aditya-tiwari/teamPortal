@@ -1,7 +1,7 @@
 [build]
     publish = "dist/teamer-frontend"
     command = "ng build"
-[[redirect]]
+[[redirects]]
     from = "/*"
     to = "/index.html"
     status = 200

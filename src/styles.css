@@ -59,3 +59,24 @@ body {
   color: rgb(185, 45, 45);
   padding-bottom: 30px;
 }
+
+
+.accent-bg {
+  background-color: #3b78ad; 
+  color: white;
+} 
+
+.flat-btn {
+    background-color: #3495eb; 
+    color: white;
+    &:hover {
+      background-color: #3b78ad;
+    }
+} 
+.strocked-btn{
+    color: #3495eb;
+    &:hover {
+      background-color: #cce6fc;
+    }
+}
+

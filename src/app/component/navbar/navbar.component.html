@@ -1,5 +1,5 @@
 <!-- <h1>this is navbar</h1> -->
-<mat-toolbar color="accent">
+<mat-toolbar color="pimary" class="accent-bg">
     <a
       routerLink="/admin/profile"
       mat-icon-button
@@ -10,7 +10,15 @@
     </a>
     <span>TeamPortal</span>
     <span class="example-spacer"></span>
-    
+    <button
+      *ngIf="userService.isLoggedIn() && hasAppAdminAuthority"
+      mat-button
+      class="example-icon favorite-icon mr10"
+      aria-label="Example icon-button with heart icon"
+    >
+    <mat-icon mat-list-icon class="pb26">manage_accounts</mat-icon>
+      Manage Users
+    </button>
   
     <button
       (click)="logout()"
@@ -27,7 +35,7 @@
       *ngIf="userService.isLoggedIn()"
       class="example-icon favorite-icon ml10"
       mat-button
-      routerLink="/admin/profile"
+      [routerLink]="'admin/profile'"
       aria-label="Example icon-button with heart icon"
     >
     <mat-icon mat-list-icon class="pb26">account_circle</mat-icon>
@@ -36,10 +44,12 @@
     <button
       *ngIf="userService.isLoggedIn()"
       mat-button
-      class="example-icon favorite-icon no-hover"
       aria-label="Example icon-button with heart icon"
     >
-    <mat-icon mat-list-icon class="pb26" [matBadge]="notifications" >notifications</mat-icon>
+    <mat-icon mat-list-icon class="pb26" 
+    [matBadge]="notifications ? notifications : ''"  
+    (click)="openNotifications()"
+    matBadgeColor="accent">notifications</mat-icon>
       
     </button>
 
@@ -67,4 +77,26 @@
 
 
   </mat-toolbar>
+  
+
+  <!-- <mat-menu #menu="matMenu" style="height: 400px;">
+    <ng-container *ngIf="notificationsList?.length; else noNotifications">
+      <div class="custom-notification-item" *ngFor="let notification of notificationsList" (click)="redirectFromNotification(notification)">
+        <mat-icon class="custom-icon">notification_important</mat-icon>
+        <div class="custom-notification-content">
+          <h4>{{ notification.notificationRelation }}: {{ notification.notificationType }}</h4>
+          <p>{{ notification.notificationDescription }}</p>
+        </div>
+      </div>
+    </ng-container>
+  
+    <ng-template #noNotifications>
+      <div class="no-notifications">
+        <mat-icon class="custom-icon">notifications_off</mat-icon>
+        <span>No new notifications</span>
+      </div>
+    </ng-template>
+  </mat-menu> -->
+
+
   

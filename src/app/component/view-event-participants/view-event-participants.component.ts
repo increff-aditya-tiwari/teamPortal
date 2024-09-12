@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { EventService } from 'src/app/service/eventService/event.service';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import { UserService } from 'src/app/service/userService/user.service';
 import Swal from 'sweetalert2';
@@ -22,6 +23,7 @@ export class ViewEventParticipantsComponent implements OnInit {
     private activeRoute: ActivatedRoute, 
     private _snack:MatSnackBar,
     private standardService:StandardService,
+    private eventService:EventService,
     public userService : UserService
   ) { }
 
@@ -33,7 +35,7 @@ export class ViewEventParticipantsComponent implements OnInit {
     this.eventOrganiser = this.activeRoute.snapshot.params.eventOrganiser;
     this.currentUser = this.userService.getUser().userId;
     console.log("this is event orv ",this.forApproval)
-    this.standardService.getEventParticipants(this.eventId).subscribe(
+    this.eventService.getEventParticipants(this.eventId).subscribe(
       (data: any) => {
         
         this.participantsList = data;
@@ -60,7 +62,7 @@ export class ViewEventParticipantsComponent implements OnInit {
           participantId:participantId,
           participantType:participantType
         }
-        this.standardService.removeEventParticipant(removeEventParticipantForm).subscribe(
+        this.eventService.removeEventParticipant(removeEventParticipantForm).subscribe(
           (data) => {
             this._snack.open('Participant Deleted ', '', {
               duration: 3000,

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
-import { AdminGuard } from './service/guard/admin.guard';
+import { AppAdminGuard } from './service/guard/app.admin.guard';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { NormalUserGuard } from './service/guard/normal-user.guard';
 import { ProfileComponent } from './component/profile/profile.component';
@@ -24,11 +24,14 @@ import { ViewEventClaimExpenseComponent } from './component/view-event-claim-exp
 import { ViewEventClaimApprovalComponent } from './component/view-event-claim-approval/view-event-claim-approval.component';
 import { UpdateEventClaimExpenseComponent } from './component/update-event-claim-expense/update-event-claim-expense.component';
 import { ViewApprovalComponent } from './component/view-approval/view-approval.component';
+import { NotificationsComponent } from './component/notifications/notifications.component';
 
 const routes: Routes = [
   {
     path:'',
-    component:LoginComponent
+    component:LoginComponent,
+    pathMatch:'full',
+    canActivate:[NormalUserGuard],
   },
   {
     path:'login',
@@ -43,7 +46,7 @@ const routes: Routes = [
   {
     path : 'admin',
     component: AdminDashboardComponent,
-    canActivate:[AdminGuard],
+    canActivate:[NormalUserGuard],
     children:[
       {
         path: 'home',
@@ -108,12 +111,16 @@ const routes: Routes = [
         component:ViewApprovalComponent
       }
     ]
-  },
-  {
+  },{
     path : 'user-dashboard',
     component: UserDashboardComponent,
     pathMatch:'full',
-    // canActivate:[AdminGuard]
+    canActivate:[NormalUserGuard],
+  },{
+    path:'notifications',
+    component:NotificationsComponent,
+    pathMatch:'full',
+    canActivate:[NormalUserGuard],
   }
 ];
 

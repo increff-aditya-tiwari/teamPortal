@@ -1,0 +1,11 @@
+<!-- <h1 mat-dialog-title>File Preview</h1> -->
+<div mat-dialog-actions>
+  <!-- <button mat-button (click)="onNoClick()">Close</button> -->
+  <button mat-button (click)="onDownload()" class="flat-btn">  <mat-icon mat-list-icon>download</mat-icon></button>
+  <!-- <button  mat-fab color="acent" class="flt-btn">
+    <mat-icon mat-list-icon>download</mat-icon>
+</button> -->
+</div>
+<div mat-dialog-content class="mt20">
+  <img [src]="'data:image/png;base64,'+data.expense.attachmentDetail" width="100%" height="600px"/>
+</div>

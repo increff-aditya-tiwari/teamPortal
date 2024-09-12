@@ -1,7 +1,8 @@
 <div class="container text-center mt20" *ngIf="!forApproval">
     <button
       mat-raised-button
-      color="accent"
+      color="accen"
+      class="flat-btn"
       routerLink="/admin/create-event"
     >
       Create Event
@@ -24,40 +25,43 @@
       <p>{{event.description}} </p>
     </mat-card-content>
     <mat-card-action>
-        <button mat-flat-button color="accent" 
+        <button mat-flat-button color="accnt"  class="flat-btn"
         [routerLink]="'/admin/view-event-participants/' + event.eventId + '/' + event.eventOrganiser" 
         [queryParams]="{'forApproval': forApproval}">
       Participants
   </button>
       
-      <button  mat-flat-button color="accent" class="ml20" *ngIf = "event.eventOrganiser == currentUser && !forApproval" [routerLink]="'/admin/add-event-participant/' + event.eventId">
+      <button  mat-flat-button color="accet" class="ml20 flat-btn" *ngIf = "event.eventOrganiser == currentUser && !forApproval" [routerLink]="'/admin/add-event-participant/' + event.eventId">
         Add Participants
       </button>
-      <button mat-flat-button color="accent" class="ml20" 
+      <button mat-flat-button color="accet" class="ml20 flat-btn" 
       *ngIf = "event.eventOrganiser == currentUser || forApproval" 
       [routerLink]="'/admin/view-event-claims/' + event.eventId + '/' + event.eventOrganiser"
       [queryParams]="{'forApproval': forApproval}"
       >
       Claims
     </button>
-      <button mat-flat-button color="accent" class="ml20" *ngIf = "event.eventOrganiser != currentUser && !hasJoinedEvent(event.eventId) && !forApproval"  (click)="addMember(event.eventId)">Join</button>
-      <!-- <button mat-stroked-button color="accent" class="ml20" *ngIf = "event.eventOrganiser == currentUser">
+      <button mat-flat-button color="accen" class="ml20 flat-btn" *ngIf = "event.eventOrganiser != currentUser && !hasJoinedEvent(event.eventId) && !forApproval"  (click)="addMember(event.eventId)">Join</button>
+      <!-- <button mat-stroked-button color="accnt" class="ml20 strocked-btn" *ngIf = "event.eventOrganiser == currentUser">
         Add Expense : 390
       </button>
-      <button mat-stroked-button color="accent" class="ml20" *ngIf = "event.eventOrganiser == currentUser">
+      <button mat-stroked-button color="acent" class="ml20 strocked-btn" *ngIf = "event.eventOrganiser == currentUser">
         Approval : Pending
       </button> -->
-      <button mat-stroked-button color="accent" class="ml20" *ngIf = "event.eventOrganiser == currentUser && !forApproval" [routerLink]="'/admin/view-event-requests/' + event.eventId">
+      <button mat-stroked-button color="accnt" class="ml20 strocked-btn" *ngIf = "event.eventOrganiser == currentUser && !forApproval"  (click)="navigateToInviteRequests(event,'REQUEST')">
         Requests
       </button>
-      <!-- <button mat-flat-button color="warn" class="ml10" *ngIf = "event.eventOrganiser == currentUser">
-        Delete
+      <button mat-stroked-button color="accnt" class="ml20 strocked-btn" *ngIf = "event.eventOrganiser != currentUser && !forApproval"  (click)="navigateToInviteRequests(event,'INVITE')">
+        Invites
+      </button>
+      <!-- <button mat-flat-button color="wrn" class="ml10 flat-btn" *ngIf = "event.eventOrganiser == currentUser" (click)="notify()">
+        Notify
       </button> -->
     </mat-card-action>
   </mat-card>
   
   <div class="container text-center mt20 mb20" *ngIf="!forApproval">
-    <button routerLink="/admin/create-event" mat-fab color="accent">
+    <button routerLink="/admin/create-event" mat-fab color="acent" class="flat-btn">
         <mat-icon mat-list-icon>add</mat-icon>
     </button>
   </div>

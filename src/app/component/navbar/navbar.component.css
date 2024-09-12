@@ -1,3 +1,41 @@
 .example-spacer {
     flex: 1 1 auto;
   }
+  .custom-notification-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .custom-notification-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .custom-icon {
+    margin-right: 10px;
+    color: #3b78ad;
+  }
+  
+  .custom-notification-content h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #3b78ad;
+  }
+  
+  .custom-notification-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .no-notifications {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .no-notifications .custom-icon {
+    margin-right: 10px;
+  }
