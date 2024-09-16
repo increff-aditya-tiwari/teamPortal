@@ -33,6 +33,9 @@
       </button>
       <button mat-list-item routerLink="/admin/view-approvals" 
       [class.active]="isActive('approval')"
+      [matBadge]="pendingApproval >0 ? pendingApproval : ''"
+      matBadgeColor="accent"
+      (click)="updatePendingApproval()"
       >
         <mat-icon mat-list-icon>verified_user</mat-icon> Approvals
       </button>

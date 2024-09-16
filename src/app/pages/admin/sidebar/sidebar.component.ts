@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
+import { ClaimService } from 'src/app/service/claimService/claim.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,9 +20,35 @@ export class SidebarComponent implements OnInit {
     'create-event' : ['/admin/create-event'],
     'approval' : ['/admin/view-approvals','/admin/events?forApproval=true']
   };
-  constructor(private router: Router) { }
-
+  constructor(
+    private router: Router,
+    private claimService : ClaimService
+  ) { }
+  approvalList=[]
+  pendingApproval = 0;
+  getAllPendingApprovals(){
+    this.claimService.getAllPendingApprovals().subscribe(
+      (data: any) => {
+        
+        this.approvalList=data
+        this.pendingApproval = this.approvalList.length;
+        console.log(this.approvalList);
+      },
+      (error) => {
+        Swal.fire('Error!! ', error.error.message, 'error');
+        console.log(error);
+      }
+    );
+  }
   ngOnInit(): void {
+    this.getAllPendingApprovals();
+    this.claimService.claimApprovalStatus.asObservable().subscribe(
+      (data: any) => {
+        if (data?.notificationRelation === "CLAIM" && data?.notificationType === "CLAIM_APPROVAL") {
+            this.pendingApproval = this.pendingApproval + 1;
+        }
+      }
+    )
   }
 
   isActive(page : string): boolean {
@@ -30,6 +58,10 @@ export class SidebarComponent implements OnInit {
     }else{
       return paths.some(path => this.router.url.includes(path)) && !this.router.url.includes('forApproval=true');
     }  
+  }
+
+  updatePendingApproval(){
+    this.pendingApproval = 0;
   }
 
 }

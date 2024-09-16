@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import baseUrl from '../helper/backend-details';
 import { UserService } from '../userService/user.service';
 import { shareReplay } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { shareReplay } from 'rxjs/operators';
 export class ClaimService {
 
   constructor(private http : HttpClient,private userService:UserService) { }
+  public claimApprovalStatus = new BehaviorSubject<Object>(null);
 
   claimBaseUrl = baseUrl + '/claim';
 

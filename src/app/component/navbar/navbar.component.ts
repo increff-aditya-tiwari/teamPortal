@@ -13,6 +13,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
 import {MatMenuModule,MatMenu,MatMenuContent} from '@angular/material/menu';
 import { TeamService } from 'src/app/service/teamService/team.service';
 import { EventService } from 'src/app/service/eventService/event.service';
+import { ClaimService } from 'src/app/service/claimService/claim.service';
 
 
 
@@ -35,6 +36,7 @@ export class NavbarComponent implements OnInit {
     public userService:UserService,
     public teamService:TeamService,
     private eventService:EventService,
+    private claimService:ClaimService,
     public router:Router,
     private dialog: MatDialog
   ) {}
@@ -99,6 +101,10 @@ export class NavbarComponent implements OnInit {
     this.eventService.eventInviteRequest.next(data);
   }
 
+  private getClaimApprols(data){
+    this.claimService.claimApprovalStatus.next(data);
+  }
+
   private attachWebSocketListeners() {
     this.webSocket.onmessage = (event) => {
         const messageData = JSON.parse(event.data);
@@ -108,6 +114,8 @@ export class NavbarComponent implements OnInit {
           this.getTeamInviteRequestData(messageData);
         }else if(messageData.notificationRelation === 'EVENT'){
           this.getEventInviteRequestData(messageData);
+        }else if(messageData.notificationRelation === 'CLAIM'){
+          this.getClaimApprols(messageData);
         }
         this.notifications = this.notificationsList.length;
     };

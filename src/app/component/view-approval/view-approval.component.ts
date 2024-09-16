@@ -15,14 +15,14 @@ export class ViewApprovalComponent implements OnInit {
 
   constructor(
     private standardService : StandardService,
-    private claimSerivice : ClaimService,
+    private claimService : ClaimService,
     private router:Router,
     private _snack:MatSnackBar
   ) { }
   approvalList=[]
   claim;
   getAllPendingApprovals(){
-    this.claimSerivice.getAllPendingApprovals().subscribe(
+    this.claimService.getAllPendingApprovals().subscribe(
       (data: any) => {
         
         this.approvalList=data
@@ -45,7 +45,7 @@ export class ViewApprovalComponent implements OnInit {
 
   }
   seeDetail(claimId): void {
-    this.claimSerivice.getClaimById(claimId).subscribe(
+    this.claimService.getClaimById(claimId).subscribe(
       (data)=>{
         // console.log(data);
         this.claim = data;
@@ -60,7 +60,7 @@ export class ViewApprovalComponent implements OnInit {
   }
   claimApprovalUpdate(updateClaimApprovalForm){
     console.log("updateClaimApprovalForm ",updateClaimApprovalForm)
-    this.claimSerivice.claimApprovalUpdate(updateClaimApprovalForm).subscribe(
+    this.claimService.claimApprovalUpdate(updateClaimApprovalForm).subscribe(
       
       (data)=>{
         this._snack.open('Claim Updated ', '', {
