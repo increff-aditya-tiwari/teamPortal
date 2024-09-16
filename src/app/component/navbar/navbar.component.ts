@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { NotificationsComponent } from '../notifications/notifications.component';
 import {MatMenuModule,MatMenu,MatMenuContent} from '@angular/material/menu';
+import { TeamService } from 'src/app/service/teamService/team.service';
+import { EventService } from 'src/app/service/eventService/event.service';
 
 
 
@@ -31,6 +33,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     public standardService:StandardService,
     public userService:UserService,
+    public teamService:TeamService,
+    private eventService:EventService,
     public router:Router,
     private dialog: MatDialog
   ) {}
@@ -87,11 +91,24 @@ export class NavbarComponent implements OnInit {
     )
   }
 
+  private getTeamInviteRequestData(data){
+    this.teamService.teamInviteRequest.next(data);
+  }
+
+  private getEventInviteRequestData(data){
+    this.eventService.eventInviteRequest.next(data);
+  }
+
   private attachWebSocketListeners() {
     this.webSocket.onmessage = (event) => {
         const messageData = JSON.parse(event.data);
         console.log("Received data:", messageData);
         this.notificationsList.push(messageData);
+        if(messageData.notificationRelation === 'TEAM'){
+          this.getTeamInviteRequestData(messageData);
+        }else if(messageData.notificationRelation === 'EVENT'){
+          this.getEventInviteRequestData(messageData);
+        }
         this.notifications = this.notificationsList.length;
     };
 

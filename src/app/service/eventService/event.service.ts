@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserService } from '../userService/user.service';
 import baseUrl from '../helper/backend-details';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
   constructor(private http : HttpClient,private userService:UserService) { }
+  public eventInviteRequest = new BehaviorSubject<Object>(null);
 
   eventBaserUrl = baseUrl +'/event';
 

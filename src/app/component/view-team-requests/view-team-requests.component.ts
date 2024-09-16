@@ -65,10 +65,14 @@ export class ViewTeamRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.teamId = this.activeRoute.snapshot.params.teamId;
     this.requestType = history.state.requestType;
+    this.teamData = history.state.teamData;
+    console.log("this is teamData ", this.teamData);
     if(this.requestType=='REQUEST'){
-      this.allRequestForTeam(this.teamId)
+      this.requestInviteList=this.teamData.requestList;
+      // this.allRequestForTeam(this.teamId)
     }else{
-      this.allInviteFromTeam(this.teamId)
+      this.requestInviteList = this.teamData.inviteList;
+      // this.allInviteFromTeam(this.teamId)
     }
     // this.requestInviteList = this.teamData.requests;
     console.log("this is team data ",this.requestInviteList);

@@ -1,24 +1,24 @@
 <mat-card>
-    <h1>{{teams?.length === 0 ? 'Please Add Team To See Here':'All Teams'}}</h1>
+    <h1>{{teamDataList?.length === 0 ? 'Please Add Team To See Here':'All Teams'}}</h1>
     <mat-list>
-      <mat-list-item *ngFor="let team of teams">
+      <mat-list-item *ngFor="let teamData of teamDataList">
         <mat-icon mat-list-icon>group_work</mat-icon>
-        <div mat-line>{{team.teamName}}</div>
-        <div mat-line>{{team.description}}</div>
+        <div mat-line>{{teamData.team.teamName}}</div>
+        <div mat-line>{{teamData.team.description}}</div>
         <mat-divider></mat-divider>
-        <button  mat-stroked-button color="accet" class="ml10 strocked-btn"  *ngIf="currentUserId != team.createdBy" [matBadge] = "team.invites && team!.invites!.length ? team?.invites.length : ''"   (click)="navigateToInviteRequests(team,'INVITE')" [matBadgeColor]="accent">
+        <button  mat-stroked-button color="accet" class="ml10 strocked-btn"  *ngIf="currentUserId != teamData.team.createdBy" [matBadge] = "teamData.inviteList && teamData.inviteList!.length ? teamData.inviteList.length : ''" matBadgeColor="accent"  (click)="navigateToInviteRequests(teamData,'INVITE')" >
             Invites
           </button>
-        <button  mat-flat-button color="accet"  *ngIf="!hasJoinedTeam(team.teamId)" class="ml10 flat-btn" (click)="addMember(team.teamId)">
+        <button  mat-flat-button color="accet"  *ngIf="!hasJoinedTeam(teamData.team.teamId)" class="ml10 flat-btn" (click)="addMember(teamData.team.teamId)">
             Join Team
           </button>
-          <button  mat-stroked-button color="acent"  *ngIf="currentUserId == team.createdBy" [matBadge] = "team.requests && team!.requests!.length ? team?.requests.length : ''"  class="ml10 strocked-btn"  (click)="navigateToInviteRequests(team,'REQUEST')">
+          <button  mat-stroked-button color="acent" class="ml10 strocked-btn"  *ngIf="currentUserId == teamData.team.createdBy" [matBadge] = "teamData.requestList && teamData.requestList!.length ? teamData.requestList.length : ''" matBadgeColor="accent"  (click)="navigateToInviteRequests(teamData,'REQUEST')">
             Requests
           </button>
-          <button  mat-stroked-button color="accnt" *ngIf="currentUserId == team.createdBy" class="ml10 strocked-btn" [routerLink]="'/admin/add-team-member/' + team.teamId">
+          <button  mat-stroked-button color="accnt" *ngIf="currentUserId == teamData.team.createdBy" class="ml10 strocked-btn" [routerLink]="'/admin/add-team-member/' + teamData.team.teamId">
             Add Member
           </button>
-          <button  mat-flat-button color="accen"  class="ml10 flat-btn" [routerLink] = "'/admin/view-team-members/' + team.teamId + '/' + team.createdBy">
+          <button  mat-flat-button color="accen"  class="ml10 flat-btn" [routerLink] = "'/admin/view-team-members/' + teamData.team.teamId + '/' + teamData.team.createdBy">
             Members
           </button>
       </mat-list-item>

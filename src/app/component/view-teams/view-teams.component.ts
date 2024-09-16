@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { StandardService } from 'src/app/service/standard/standard.service';
 import { TeamService } from 'src/app/service/teamService/team.service';
 import { UserService } from 'src/app/service/userService/user.service';
-import { Team } from 'src/app/types/team';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,7 +13,7 @@ import Swal from 'sweetalert2';
 export class ViewTeamsComponent implements OnInit {
 
   joinedTeams: number[] = [];
-  teams : []
+  teamDataList : any[] = []
   constructor(private standardService:StandardService,
     private teamService:TeamService
     ,public userService:UserService
@@ -31,58 +30,34 @@ export class ViewTeamsComponent implements OnInit {
   title = 'WebSocketClient';
   stock: any = {};
 
-  getTeamRequests(team){
-    this.teamService.allRequestForTeam(team.teamId).subscribe(
+  getTeamRequests(teamData){
+    this.teamService.allRequestForTeam(teamData.team.teamId).subscribe(
       (data:any) => {
-        // console.log("this is requests ",data);
-        team.requests = data;
-      },
-  
-      (error) => {
-        Swal.fire('Error!! ', error, 'error');
-        console.log(error);
-        // this.mapUserTeamForm = {
-        //   teamId:'',
-        //   userIds:[]
-        // };
+        teamData.requestList = data;
       }
     );
   
   }
-  getTeamInvites(team){
-    this.teamService.allInvitesFromTeam(team.teamId).subscribe(
+  getTeamInvites(teamData){
+    this.teamService.allInvitesFromTeam(teamData.team.teamId).subscribe(
       (data:any) => {
-        // console.log("this is invites ",data);
-        team.invites = data;
-      },
-  
-      (error) => {
-        Swal.fire('Error!! ', error, 'error');
-        console.log(error);
+        teamData.inviteList = data;
       }
     );
-  
   }
-  private webSocket: WebSocket;
-  ngOnInit(): void {
-    this.currentUserId = this.userService.getUser().userId;
-    
+  getAllTeams(){
     this.teamService.getAllTeams().subscribe(
       (data: any) => {
-        this.teams = data;
-        this.teams.forEach((team) => {
-          // this.getTeamRequests(team);
-          // this.getTeamInvites(team);
-        });
+        this.teamDataList = data;
       },
-
       (error) => {
-        //
         console.log("thsi si error ",error);
         Swal.fire('Error !!', 'Error in loading Team data', 'error');
       }
     );
+  }
 
+  getUserTeamList(){
     this.teamService.getUserTeamList(this.currentUserId).subscribe(
       (data: any)=>{
         this.joinedTeams = data;
@@ -91,21 +66,50 @@ export class ViewTeamsComponent implements OnInit {
       (error) =>{
         Swal.fire('Error !!', 'Error in loading User Team List', error);
       }
-    )
-
-    // this.webSocket = new WebSocket(`ws://localhost:8080/send-notification/${this.userService.getToken()}`);
-    // this.webSocket.onmessage = (event) => {
-    //   console.log("this is data ",event.data);
-    //   this.notificationsList.push(JSON.parse(event.data));
-    //   // this.notifications
-    //   console.log("this is notificationsList ", this.notificationsList)
-    // };
-
+    );
   }
 
-  navigateToInviteRequests(team: any,category) {
-    this.router.navigate(['/admin/view-team-requests', team.teamId], {
-      state: { requestType: category }
+  // notificationDescription
+  // : 
+  // "Someone Requested to Join Your Team"
+  // notificationId
+  // : 
+  // 155
+  // notificationRelation
+  // : 
+  // "TEAM"
+  // notificationRelationId
+  // : 
+  // 1
+  // notificationType
+  // : 
+  // "REQUEST"
+
+  ngOnInit(): void {
+    this.currentUserId = this.userService.getUser().userId;
+    this.getAllTeams();
+    this.getUserTeamList();
+
+    this.teamService.teamInviteRequest.asObservable().subscribe(
+      (data: any) => {
+        if (data?.notificationRelation === "TEAM") {
+          this.teamDataList.forEach(teamData => {
+            if (teamData.team.teamId === data.notificationRelationId) {
+              if (data.notificationType === "REQUEST") {
+                this.getTeamRequests(teamData);
+              } else if (data.notificationType === "INVITE") {
+                this.getTeamInvites(teamData);
+              }
+            }
+          });
+        }
+      }
+    );
+  }
+
+  navigateToInviteRequests(teamData: any,category) {
+    this.router.navigate(['/admin/view-team-requests', teamData.team.teamId], {
+      state: { requestType: category, teamData : teamData }
     });
   }
 

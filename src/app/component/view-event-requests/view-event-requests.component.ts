@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 export class ViewEventRequestsComponent implements OnInit {
 
   eventId;
-  requestList = [];
+  eventData : any;
   eventRequestIntviteList = [];
   requestType="";
   constructor(private standardService:StandardService,
@@ -48,7 +48,7 @@ export class ViewEventRequestsComponent implements OnInit {
     this.eventService.allInvitesFromEvent(eventId).subscribe(
       (data:any) => {
         // console.log("this is data ",data);
-        this.eventRequestIntviteList = data;
+        this.eventRequestIntviteList.push(data);
       },
   
       (error) => {
@@ -65,10 +65,13 @@ export class ViewEventRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.eventId = this.activeRoute.snapshot.params.eventId;
     this.requestType = history.state.requestType;
+    this.eventData = history.state.eventData;
     if(this.requestType=='REQUEST'){
-      this.allRequestForEvent(this.eventId);
+      this.eventRequestIntviteList = this.eventData.requestList;
+      // this.allRequestForEvent(this.eventId);
     }else{
-      this.allInviteForEvent(this.eventId)
+      this.eventRequestIntviteList = this.eventData.inviteList;
+      // this.allInviteForEvent(this.eventId)
     }
   }
 

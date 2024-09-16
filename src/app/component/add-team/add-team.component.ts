@@ -39,7 +39,7 @@ export class AddTeamComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        Swal.fire('Error !!', 'Server error !!', 'error');
+        Swal.fire('Error !!', error.error.message, 'error');
       }
     );
   }
